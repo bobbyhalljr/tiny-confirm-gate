@@ -25,4 +25,5 @@ MIT
 
 ## Write-up
 
-Full walkthrough on Dev.to: https://dev.to/bobbyhalljr/your-agent-hit-the-real-web-build-a-tiny-side-effect-confirm-gate-in-typescript-35dc
+- Dev.to: https://dev.to/bobbyhalljr/your-agent-hit-the-real-web-build-a-tiny-side-effect-confirm-gate-in-typescript-35dc
+- Substack: https://bobbyhalljr.substack.com/p/your-agent-hit-the-real-web-build
