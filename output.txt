@@ -1,0 +1,36 @@
+tiny-confirm-gate demo
+No API key. No network. Example payloads only.
+
+[OK] 1. GET help page
+         READ ok: fetched https://example.test/help (200, mock html)
+[BLOCKED] 2. submit tip form (no confirm)
+         missing confirm token  needConfirm hash=74739fa798c4…
+[OK] 3. dry-run tip form
+         dry-run: would MUTATE form_submit POST https://example.test/tips  body={"note":"example tip text for a demo form","name":"","contact":""}
+
+[minted] confirm token for tip form (truncated)
+
+[OK] 4. submit tip form (with confirm)
+         MUTATE ok: submitted form → https://example.test/tips
+[BLOCKED] 5. replay same token
+         confirm token already used
+[BLOCKED] 6. webhook with tip-form token
+         confirm token does not match action hash
+[OK] 7. webhook with matching confirm
+         MUTATE ok: posted webhook → https://hooks.example.test/agent
+[BLOCKED] 8. submit with expired token
+         confirm token expired
+
+== audit ==
+allow web_fetch GET https://example.test/help  (read)
+block form_submit POST https://example.test/tips  (missing confirm token)
+dry   form_submit POST https://example.test/tips  hash=74739fa798c4…
+mint  form_submit  hash=74739fa798c4…  ttl=60000ms
+exec  form_submit POST https://example.test/tips  (confirm accepted (one-time))
+block form_submit POST https://example.test/tips  (confirm token already used)
+mint  form_submit  hash=74739fa798c4…  ttl=60000ms
+block webhook_post POST https://hooks.example.test/agent  (confirm token does not match action hash)
+mint  webhook_post  hash=e75b37df989c…  ttl=60000ms
+exec  webhook_post POST https://hooks.example.test/agent  (confirm accepted (one-time))
+mint  form_submit  hash=4dd90af7f071…  ttl=60000ms
+block form_submit POST https://example.test/signup  (confirm token expired)
